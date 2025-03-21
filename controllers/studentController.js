@@ -12,7 +12,7 @@ exports.studentLogin = async (req, res) => {
 
     res.status(200).json(student);
   } catch (error) {
-    console.error("❌ Error in student login:", error);
+    console.error("Error in student login:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -42,14 +42,12 @@ exports.registerCourse = async (req, res) => {
   if (!student) return res.status(404).json({ message: "Student not found" });
   if (!course) return res.status(404).json({ message: "Course not found" });
 
-  // ✅ Check if course is already registered
   if (student.registeredCourses.includes(courseId)) {
     return res
       .status(400)
       .json({ message: "You are already registered for this course" });
   }
 
-  // ✅ Check for seat availability
   if (course.seats <= 0) {
     return res.status(400).json({ message: "No seats available" });
   }
