@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="/CSS/styles.css" />
+  </head>
+  <body>
+    <h1>Welcome, <span id="studentName"></span></h1>
+    <button id="logoutBtn" class="logout-btn" onclick="logout()">Logout</button>
+
+    <!-- Student Details -->
+    <div>
+      <h2>Your Details</h2>
+      <p><b>Roll Number:</b> <span id="rollNumber"></span></p>
+      <p><b>Registered Courses:</b> <span id="registeredCourses"></span></p>
+    </div>
+
+    <!-- Weekly Schedule -->
+    <h2>Your Weekly Schedule</h2>
+    <div id="calendar">Loading schedule...</div>
+
+    <!-- Course Registration -->
+    <h2>Register for Courses</h2>
+    <select id="departmentFilter">
+      <option value="">All Departments</option>
+      <option value="Computer Science">Computer Science</option>
+      <option value="Electrical Engineering">Electrical Engineering</option>
+      <option value="Artificial Intelligence">Artificial Intelligence</option>
+    </select>
+    <button onclick="filterCourses()">Search Courses</button>
+    <div id="courseResults"></div>
+
+    <!-- Prerequisites Check -->
+    <h2>Check Course Prerequisites</h2>
+    <input
+      type="text"
+      id="courseCodeInput"
+      placeholder="Enter Course Code (e.g., CS101)"
+    />
+    <button onclick="checkPrerequisites()">Check</button>
+    <div id="prerequisitesResult"></div>
+
+    <script>
+      // ✅ Load Student Data on Dashboard
+      document.addEventListener("DOMContentLoaded", async function () {
+        const studentData = JSON.parse(localStorage.getItem("studentData"));
+        if (!studentData) {
+          alert("Not logged in!");
+          window.location.href = "/login";
+          return;
+        }
+
+        document.getElementById("studentName").innerText = studentData.name;
+        document.getElementById("rollNumber").innerText =
+          studentData.rollNumber;
+
+        // Load Student Courses
+        const response = await fetch(
+          `/api/students/schedule?rollNumber=${studentData.rollNumber}`
+        );
+        const registeredCourses = await response.json();
+
+        let courseList = registeredCourses
+          .map((course) => course.name)
+          .join(", ");
+        document.getElementById("registeredCourses").innerText =
+          courseList || "No courses registered.";
+
+        loadCalendar();
+      });
+
+      // ✅ Weekly Schedule Rendering
+      async function loadCalendar() {
+        const studentData = JSON.parse(localStorage.getItem("studentData"));
+        const response = await fetch(
+          `/api/students/schedule?rollNumber=${studentData.rollNumber}`
+        );
+        const courses = await response.json();
+
+        if (!Array.isArray(courses) || courses.length === 0) {
+          document.getElementById("calendar").innerHTML =
+            "<p>No courses registered.</p>";
+          return;
+        }
+
+        let calendarHTML = `
+          <table border="1">
+            <tr>
+              <th>Time</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th>
+              <th>Thursday</th><th>Friday</th>
+            </tr>`;
+
+        let timeSlots = ["9:00 AM", "11:00 AM", "1:00 PM", "3:00 PM"];
+        let schedule = {};
+
+        courses.forEach((course) => {
+          if (course.schedule) {
+            course.schedule.forEach((slot) => {
+              if (!schedule[slot.day]) schedule[slot.day] = {};
+              schedule[slot.day][slot.time] = course.name;
+            });
+          }
+        });
+
+        timeSlots.forEach((time) => {
+          calendarHTML += `<tr><td>${time}</td>`;
+          ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].forEach(
+            (day) => {
+              let courseName = schedule[day]?.[time] || "Available";
+              let style =
+                courseName !== "Available"
+                  ? "style='background-color: red; color: white;'"
+                  : "";
+              calendarHTML += `<td ${style}>${courseName}</td>`;
+            }
+          );
+          calendarHTML += "</tr>";
+        });
+
+        calendarHTML += "</table>";
+        document.getElementById("calendar").innerHTML = calendarHTML;
+      }
+
+      // ✅ Course Filtering & Registration
+      async function filterCourses() {
+        const department = document.getElementById("departmentFilter").value;
+        const response = await fetch(
+          `/api/students/filter?department=${department}`
+        );
+        const courses = await response.json();
+
+        let html = "";
+        courses.forEach((course) => {
+          html += `
+            <div>
+              ${course.name} - Seats: ${course.seats}
+              <button onclick="registerCourse('${course._id}')">Register</button>
+            </div>
+          `;
+        });
+
+        document.getElementById("courseResults").innerHTML = html;
+      }
+
+      async function registerCourse(courseId) {
+        const studentData = JSON.parse(localStorage.getItem("studentData"));
+        const response = await fetch("/api/students/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            rollNumber: studentData.rollNumber,
+            courseId,
+          }),
+        });
+
+        const data = await response.json();
+        if (response.status === 200) {
+          alert("Registered successfully!");
+          location.reload();
+        } else {
+          alert("Error: " + data.message);
+        }
+      }
+
+      // ✅ Check Prerequisites Before Registration
+      async function checkPrerequisites() {
+        const courseCode = document
+          .getElementById("courseCodeInput")
+          .value.trim()
+          .toUpperCase();
+
+        if (!courseCode) {
+          alert("Please enter a valid Course Code.");
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            `/api/students/prerequisites/${courseCode}`
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          if (data.length === 0) {
+            document.getElementById(
+              "prerequisitesResult"
+            ).innerHTML = `<p>No prerequisites for ${courseCode}.</p>`;
+            return;
+          }
+
+          let html = `<h3>Prerequisites for ${courseCode}:</h3><ul>`;
+          data.forEach((course) => {
+            html += `<li>${course.name} (${course.code})</li>`;
+          });
+          html += "</ul>";
+
+          document.getElementById("prerequisitesResult").innerHTML = html;
+        } catch (error) {
+          console.error(" Error loading prerequisites:", error);
+          alert("Failed to fetch prerequisites. Please try again.");
+        }
+      }
+
+      function logout() {
+        localStorage.removeItem("studentData");
+        window.location.href = "/login";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/login.css" />
+  </head>
+  <body>
+    <div class="login-container">
+      <h1>Login</h1>
+
+      <!-- Buttons Stacked Vertically -->
+      <div class="button-container">
+        <button onclick="showStudentLogin()">Student</button>
+        <button onclick="showAdminLogin()">Admin</button>
+      </div>
+
+      <!-- Student Login Form (Initially Hidden) -->
+      <div id="studentLogin" class="login-form">
+        <h2>Student Login</h2>
+        <input type="text" id="rollNumber" placeholder="Enter Roll Number" />
+        <button onclick="studentLogin()">Login</button>
+      </div>
+
+      <!-- Admin Login Form (Initially Hidden) -->
+      <div id="adminLogin" class="login-form">
+        <h2>Admin Login</h2>
+        <input type="text" id="adminUsername" placeholder="Enter Username" />
+        <input
+          type="password"
+          id="adminPassword"
+          placeholder="Enter Password"
+        />
+        <button onclick="adminLogin()">Login</button>
+      </div>
+    </div>
+
+    <script src="/js/student/auth.js"></script>
+    <script src="/js/admin/auth.js"></script>
+    <script>
+      // ✅ Forms Hidden by Default
+      document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("studentLogin").style.display = "none";
+        document.getElementById("adminLogin").style.display = "none";
+      });
+
+      function showStudentLogin() {
+        document.getElementById("studentLogin").style.display = "block";
+        document.getElementById("adminLogin").style.display = "none";
+      }
+
+      function showAdminLogin() {
+        document.getElementById("adminLogin").style.display = "block";
+        document.getElementById("studentLogin").style.display = "none";
+      }
+    </script>
+  </body>
+</html>

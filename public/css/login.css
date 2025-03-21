@@ -1,0 +1,100 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Full Page Centering */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Login Card */
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  text-align: center;
+}
+
+/* Centered Heading */
+.login-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #1f3b67;
+}
+
+/* Button Container */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Styled Buttons */
+button {
+  background-color: #1f3b67;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background 0.3s, transform 0.2s;
+  width: 100%;
+}
+
+button:hover {
+  background-color: #3b5998;
+  transform: scale(1.05);
+}
+
+/* Login Forms */
+.login-form {
+  display: none;
+  margin-top: 15px;
+  text-align: center;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-form h2 {
+  font-size: 18px;
+  color: #1f3b67;
+  margin-bottom: 10px;
+}
+
+/* Input Fields */
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .login-container {
+    padding: 20px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

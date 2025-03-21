@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <!-- <div class="dashboard-container"> -->
+    <!-- Logout Button -->
+    <button id="logoutBtn" class="logout-btn">Logout</button>
+
+    <h1>Welcome, Admin</h1>
+
+    <!-- Manage Courses -->
+    <div class="dashboard-section">
+      <h2>Manage Courses</h2>
+      <div class="course-section">
+        <input
+          type="text"
+          id="courseCode"
+          placeholder="Course Code (e.g., CS101)"
+        />
+        <input type="text" id="courseName" placeholder="Course Name" />
+        <input type="text" id="department" placeholder="Department" />
+        <input type="number" id="seats" placeholder="Seats Available" />
+        <button onclick="addCourse()">Add Course</button>
+      </div>
+      <div id="courseList"></div>
+    </div>
+
+    <!-- Manage Students -->
+    <div class="dashboard-section">
+      <h2>Manage Student Registrations</h2>
+      <div class="course-section">
+        <input
+          type="text"
+          id="studentRollNumber"
+          placeholder="Student Roll Number"
+        />
+        <input
+          type="text"
+          id="studentCourseCode"
+          placeholder="Course Code (e.g., CS101)"
+        />
+        <button onclick="registerStudent()">Register Student</button>
+      </div>
+      <div id="studentList"></div>
+    </div>
+
+    <!-- Generate Reports -->
+    <div class="dashboard-section">
+      <h2>Generate Reports</h2>
+      <button onclick="getReport('students')">
+        List of Registered Students
+      </button>
+      <button onclick="getReport('courses')">
+        Courses with Available Seats
+      </button>
+      <button onclick="getReport('prerequisites')">
+        Students Missing Prerequisites
+      </button>
+      <div id="reportResults"></div>
+    </div>
+    <!-- </div> -->
+
+    <script src="/js/admin/dashboard.js"></script>
+  </body>
+</html>
