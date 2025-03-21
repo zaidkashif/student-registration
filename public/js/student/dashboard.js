@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   document.getElementById("studentName").innerText = studentData.name;
   document.getElementById("rollNumber").innerText = studentData.rollNumber;
 
-  // ✅ Load Student Courses
+  // Load Student Courses
   const response = await fetch(
     `/api/students/schedule?rollNumber=${studentData.rollNumber}`
   );
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   loadCalendar();
 });
 
-// ✅ Function to Load Weekly Schedule
+// Function to Load Weekly Schedule
 async function loadCalendar() {
   const studentData = JSON.parse(localStorage.getItem("studentData"));
   if (!studentData) {
@@ -78,7 +78,7 @@ async function loadCalendar() {
   document.getElementById("calendar").innerHTML = calendarHTML;
 }
 
-// ✅ Function to Filter Courses
+// Function to Filter Courses
 async function filterCourses() {
   const department = document.getElementById("departmentFilter").value;
   const response = await fetch(`/api/students/filter?department=${department}`);
@@ -97,7 +97,7 @@ async function filterCourses() {
   document.getElementById("courseResults").innerHTML = html;
 }
 
-// ✅ Function to Register for a Course
+// Function to Register for a Course
 async function registerCourse(courseId) {
   const studentData = JSON.parse(localStorage.getItem("studentData"));
   const response = await fetch("/api/students/register", {
@@ -172,12 +172,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function logout() {
-  // ✅ Remove stored student data from localStorage
   localStorage.removeItem("studentData");
-
-  // ✅ Redirect user to the login page
   window.location.href = "/login";
 }
 
-// ✅ Load calendar when the page loads
 window.onload = loadCalendar;

@@ -52,7 +52,6 @@ exports.registerCourse = async (req, res) => {
     return res.status(400).json({ message: "No seats available" });
   }
 
-  // ✅ Register the course
   student.registeredCourses.push(courseId);
   course.seats -= 1;
 

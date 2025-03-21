@@ -3,13 +3,13 @@ document.addEventListener("DOMContentLoaded", async function () {
   loadStudents();
 });
 
-// ✅ Logout Functionality
+// Logout Functionality
 document.getElementById("logoutBtn").addEventListener("click", function () {
   localStorage.removeItem("adminData");
   window.location.href = "/login";
 });
 
-// ✅ Function to Load Courses
+// Function to Load Courses
 async function loadCourses() {
   const response = await fetch("/api/admin/courses");
   const courses = await response.json();
@@ -26,7 +26,7 @@ async function loadCourses() {
   document.getElementById("courseList").innerHTML = html;
 }
 
-// ✅ Function to Add Course
+// Function to Add Course
 async function addCourse() {
   const courseCode = document.getElementById("courseCode").value;
   const courseName = document.getElementById("courseName").value;
@@ -52,7 +52,7 @@ async function addCourse() {
   }
 }
 
-// ✅ Function to Edit Course
+// Function to Edit Course
 function editCourse(id, code, name, department, seats) {
   document.getElementById("courseCode").value = code;
   document.getElementById("courseName").value = name;
@@ -77,7 +77,7 @@ function editCourse(id, code, name, department, seats) {
   }
 }
 
-// ✅ Function to Update Course
+// Function to Update Course
 async function updateCourse(id) {
   const courseName = document.getElementById("courseName").value;
   const department = document.getElementById("department").value;
@@ -97,7 +97,7 @@ async function updateCourse(id) {
   }
 }
 
-// ✅ Function to Delete Course
+// Function to Delete Course
 async function deleteCourse(courseId) {
   if (!confirm("Are you sure you want to delete this course?")) return;
 
@@ -113,7 +113,7 @@ async function deleteCourse(courseId) {
   }
 }
 
-// ✅ Function to Register Student
+// Function to Register Student
 async function registerStudent() {
   const rollNumber = document.getElementById("studentRollNumber").value;
   const courseCode = document.getElementById("studentCourseCode").value;
@@ -132,7 +132,7 @@ async function registerStudent() {
   }
 }
 
-// ✅ Function to Load Registered Students
+// Function to Load Registered Students
 async function loadStudents() {
   const response = await fetch("/api/admin/students");
   const students = await response.json();
@@ -146,7 +146,6 @@ async function loadStudents() {
   document.getElementById("studentList").innerHTML = html;
 }
 
-// ✅ Function to Generate Reports
 async function getReport(type) {
   const response = await fetch(`/api/admin/reports/${type}`);
   const data = await response.json();

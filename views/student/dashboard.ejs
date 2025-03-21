@@ -41,7 +41,7 @@
     <div id="prerequisitesResult"></div>
 
     <script>
-      // ✅ Load Student Data on Dashboard
+      // Load Student Data on Dashboard
       document.addEventListener("DOMContentLoaded", async function () {
         const studentData = JSON.parse(localStorage.getItem("studentData"));
         if (!studentData) {
@@ -69,7 +69,7 @@
         loadCalendar();
       });
 
-      // ✅ Weekly Schedule Rendering
+      // Weekly Schedule Rendering
       async function loadCalendar() {
         const studentData = JSON.parse(localStorage.getItem("studentData"));
         const response = await fetch(
@@ -121,7 +121,7 @@
         document.getElementById("calendar").innerHTML = calendarHTML;
       }
 
-      // ✅ Course Filtering & Registration
+      // Course Filtering & Registration
       async function filterCourses() {
         const department = document.getElementById("departmentFilter").value;
         const response = await fetch(
@@ -162,7 +162,7 @@
         }
       }
 
-      // ✅ Check Prerequisites Before Registration
+      // Check Prerequisites Before Registration
       async function checkPrerequisites() {
         const courseCode = document
           .getElementById("courseCodeInput")
