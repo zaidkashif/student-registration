@@ -1,5 +1,3 @@
-# 📘 Software Requirements Specification (SRS)
-
 ## 📌 Project Title
 **Dynamic Course Registration and Scheduling System**
 
